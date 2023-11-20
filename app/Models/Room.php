@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Room extends Model
 {
     use HasFactory;
-    protected $table = "categories";
+    protected $table = "rooms";
     public $timestamps = true;
     protected $primaryKey = 'id';
-    protected $fillable=['name', 'description'];
+    protected $fillable=['name', 'seats'];
 
-    // Relación con el modelo Movie
-    public function movies()
+    public function movie()
     {
-        return $this->hasMany(Movie::class);
+        return $this->belongsToMany(Movie::class, 'movie_plays', 'room_id', 'movie_id');
     }
 }
