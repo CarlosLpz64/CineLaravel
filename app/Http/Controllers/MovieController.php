@@ -15,6 +15,12 @@ class MovieController extends Controller
         return response()->json($movies);
     }
 
+    public function viewIndex(Request $request)
+    {
+        $movies = Movie::with('director', 'category')->get();
+        return view('movies', ["movies"=>$movies]);
+    }
+
     public function indexPost(Request $request)
     {
         $movies = Movie::with('director', 'category')->get();
@@ -30,6 +36,17 @@ class MovieController extends Controller
         }
 
         return response()->json($movie);
+    }
+
+    public function viewShow(string $id)
+    {
+        $movie = Movie::with('director', 'category')->find($id);
+
+        if (!$movie) {
+            return response()->json(['message' => 'Pelicula no encontrada'], 404);
+        }
+        return view('detail', ["data"=>$movie]);
+        // return response()->json($movie);
     }
 
     public function store(Request $request)
@@ -84,6 +101,17 @@ class MovieController extends Controller
     {
         $movies = MoviePlay::with('movie', 'room')->get();
         return response()->json($movies);
+    }
+
+    public function viewPlays(Request $request)
+    {
+        $movies = MoviePlay::with('movie', 'room')->get();
+        return view('plays', ["data"=>$movies]);
+    }
+
+    public function viewSeats(Request $request)
+    {
+        return view('seats');
     }
 
     public function uploadCover(Request $request)
